@@ -1,3 +1,5 @@
+use adw;
+
 DROP TABLE IF EXISTS FACT_VentasTotales;
 DROP TABLE IF EXISTS FACT_NuevoDomicilio;
 DROP TABLE IF EXISTS FACT_NuevaReview;
