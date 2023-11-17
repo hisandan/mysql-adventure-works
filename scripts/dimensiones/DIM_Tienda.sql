@@ -1,4 +1,4 @@
-INSERT INTO adw.DIM_Tienda (Tienda_id, Cod_postal, Ciudad, Estado, Pais, Nombre)
+INSERT INTO adw_dwh.DIM_Tienda (Tienda_id, Cod_postal, Ciudad, Estado, Pais, Nombre)
 SELECT 
     CONCAT('Store_', SS.BusinessEntityID) AS Tienda_id,
     PA.PostalCode AS Cod_postal,
@@ -7,14 +7,14 @@ SELECT
     PCR.Name AS Pais,
     SS.Name AS Nombre
 FROM 
-    Sales_Store SS
+    adw.Sales_Store SS
 INNER JOIN 
-    Person_BusinessEntity PBE ON SS.BusinessEntityID = PBE.BusinessEntityID
+    adw.Person_BusinessEntity PBE ON SS.BusinessEntityID = PBE.BusinessEntityID
 INNER JOIN 
-    Person_BusinessEntityAddress PBEA ON PBE.BusinessEntityID = PBEA.BusinessEntityID
+    adw.Person_BusinessEntityAddress PBEA ON PBE.BusinessEntityID = PBEA.BusinessEntityID
 INNER JOIN 
-    Person_Address PA ON PBEA.AddressID = PA.AddressID
+    adw.Person_Address PA ON PBEA.AddressID = PA.AddressID
 INNER JOIN 
-    Person_StateProvince SP ON PA.StateProvinceID = SP.StateProvinceID
+    adw.Person_StateProvince SP ON PA.StateProvinceID = SP.StateProvinceID
 INNER JOIN 
-    Person_CountryRegion PCR ON SP.CountryRegionCode = PCR.CountryRegionCode;
+    adw.Person_CountryRegion PCR ON SP.CountryRegionCode = PCR.CountryRegionCode;

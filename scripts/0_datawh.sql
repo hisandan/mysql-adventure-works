@@ -1,4 +1,7 @@
-use adw;
+CREATE DATABASE IF NOT EXISTS adw_dwh;
+
+
+use adw_dwh;
 
 DROP TABLE IF EXISTS FACT_VentasTotales;
 DROP TABLE IF EXISTS FACT_NuevoDomicilio;
@@ -61,7 +64,7 @@ CREATE TABLE IF NOT EXISTS DIM_Tienda (
 CREATE TABLE IF NOT EXISTS DIM_Cliente (
   cliente_key INT UNSIGNED NOT NULL AUTO_INCREMENT,
   cliente_id VARCHAR(45) NOT NULL,
-  Demografia VARCHAR(255),
+  Demografia text,
   -- Cultura VARCHAR(45),
   -- Sexo CHAR(1),
   -- Edad INT,

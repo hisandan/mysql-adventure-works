@@ -1,16 +1,16 @@
-INSERT INTO adw.DIM_Producto (producto_id, Subcategoria, Categoria, Nombre)
+INSERT INTO adw_dwh.DIM_Producto (producto_id, Subcategoria, Categoria, Nombre)
 SELECT 
     CONCAT('PROD_', p.ProductID), 
     ps.Name AS Subcategoria,
     pc.Name AS Categoria,
     p.Name
 FROM 
-    Production_Product AS p
+    adw.Production_Product AS p
 JOIN 
-    Production_ProductSubcategory AS ps 
+    adw.Production_ProductSubcategory AS ps 
 ON 
     p.ProductSubcategoryID = ps.ProductSubcategoryID
 JOIN 
-    Production_ProductCategory AS pc 
+    adw.Production_ProductCategory AS pc 
 ON 
     ps.ProductCategoryID = pc.ProductCategoryID;
