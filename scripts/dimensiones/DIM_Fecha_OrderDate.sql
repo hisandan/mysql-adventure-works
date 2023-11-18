@@ -1,4 +1,4 @@
-INSERT INTO adw_dwh.DIM_Fecha_Venta (Fecha, Dia, Mes, Anio)
+INSERT INTO adw_dwh.DIM_Fecha_OrderDate (Fecha, Dia, Mes, Anio)
 SELECT
     fecha,
     DAY(fecha) as Dia,

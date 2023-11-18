@@ -7,7 +7,10 @@ INSERT INTO adw_dwh.FACT_NuevoDomicilio (
     Tamano,
     Peso,
     Entrega_Key,
-    Producto_Key
+    Producto_Key,
+    ShipDate_Key,
+    DueDate_Key,
+    OrderDate_Key
 )
 SELECT
     so.SalesOrderID AS Domicilio_id,
@@ -18,7 +21,10 @@ SELECT
     p.Size AS Tamano,
     p.Weight AS Peso,
     e.Entrega_key AS Entrega_Key,
-    pr.Producto_key AS Producto_Key
+    pr.Producto_key AS Producto_Key,
+    fs.Fecha_key as ShipDate_Key,
+    fd.Fecha_key as DueDate_Key,
+    fo.Fecha_key as OrderDate_Key
 FROM
     adw.Sales_SalesOrderHeader so
 JOIN
@@ -32,4 +38,11 @@ JOIN
 JOIN
     adw.Production_Product p ON sod.ProductID = p.ProductID
 JOIN
-    adw_dwh.DIM_Producto pr ON p.ProductID = pr.producto_id limit 100000;
+    adw_dwh.DIM_Producto pr ON p.ProductID = pr.producto_id 
+
+JOIN adw_dwh.DIM_Fecha_Venta fo ON fo.fecha = DATE(so.OrderDate)
+JOIN adw_dwh.DIM_Fecha_OrderShipDate fs ON fs.fecha = DATE(so.ShipDate)
+JOIN adw_dwh.DIM_Fecha_OrderDueDate fd ON fd.fecha = DATE(so.DueDate)
+    
+    
+    limit 10000;

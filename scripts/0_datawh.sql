@@ -14,6 +14,12 @@ DROP TABLE IF EXISTS DIM_Cliente;
 DROP TABLE IF EXISTS DIM_Vendedor;
 DROP TABLE IF EXISTS DIM_Entrega;
 
+DROP TABLE IF EXISTS DIM_Fecha_OrderDate;
+DROP TABLE IF EXISTS DIM_Fecha_OrderDueDate;
+DROP TABLE IF EXISTS DIM_Fecha_OrderShipDate;
+DROP TABLE IF EXISTS DIM_Fecha_Review;
+
+
 
 
 
@@ -73,17 +79,48 @@ CREATE TABLE IF NOT EXISTS DIM_Entrega (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE IF NOT EXISTS adw_dwh.DIM_Fecha_Venta (
+CREATE TABLE IF NOT EXISTS adw_dwh.DIM_Fecha_OrderDate (
+  Fecha_key INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  Fecha DATE,
+  Dia INT,
+  Mes INT,
+  Anio INT,
+  PRIMARY KEY (Fecha_key),
+  UNIQUE (Fecha)
+ )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS adw_dwh.DIM_Fecha_OrderDueDate (
   Fecha_key INT UNSIGNED NOT NULL AUTO_INCREMENT,
   Fecha DATE,
   Dia INT,
   Mes INT,
   Anio INT,
   PRIMARY KEY (Fecha_key)
+--   UNIQUE (Fecha)
  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+ CREATE TABLE IF NOT EXISTS adw_dwh.DIM_Fecha_OrderShipDate (
+  Fecha_key INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  Fecha DATE,
+  Dia INT,
+  Mes INT,
+  Anio INT,
+  PRIMARY KEY (Fecha_key)
+--   UNIQUE (Fecha)
+ )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE IF NOT EXISTS adw_dwh.DIM_Fecha_Review (
+  Fecha_key INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  Fecha DATE,
+  Dia INT,
+  Mes INT,
+  Anio INT,
+  PRIMARY KEY (Fecha_key)
+--   UNIQUE (Fecha)
+ )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- HECHOS: ---------------------------------------------
@@ -105,7 +142,7 @@ CREATE TABLE IF NOT EXISTS FACT_VentasTotales (
     PRIMARY KEY (Venta_key),
     CONSTRAINT fk_fecha
         FOREIGN KEY (Fecha_Key)
-        REFERENCES DIM_Fecha_Venta(Fecha_key)
+        REFERENCES DIM_Fecha_OrderDate(Fecha_key)
         ON DELETE CASCADE
         ON UPDATE NO ACTION,
     CONSTRAINT fk_vendedor
@@ -159,7 +196,26 @@ CREATE TABLE IF NOT EXISTS FACT_NuevoDomicilio (
     Peso DECIMAL(10, 2),
     Entrega_Key INT UNSIGNED,
     Producto_Key INT UNSIGNED,
+    ShipDate_Key INT UNSIGNED,
+    DueDate_Key INT UNSIGNED,
+    OrderDate_Key INT UNSIGNED,
     PRIMARY KEY (Domicilio_key),
+
+    CONSTRAINT fk_ShipDate_Key
+        FOREIGN KEY (ShipDate_Key)
+        REFERENCES DIM_Fecha_OrderShipDate(Fecha_key)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    CONSTRAINT fk_DueDate_Key
+        FOREIGN KEY (DueDate_Key)
+        REFERENCES DIM_Fecha_OrderDueDate(Fecha_key)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    CONSTRAINT fk_OrderDate_Key
+        FOREIGN KEY (OrderDate_Key)
+        REFERENCES DIM_Fecha_OrderDate(Fecha_key)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
 
     CONSTRAINT fk_entrega_dom
         FOREIGN KEY (Entrega_Key)
@@ -179,10 +235,16 @@ CREATE TABLE IF NOT EXISTS FACT_NuevaReview (
     Rewiev_id VARCHAR(45) NOT NULL,
     Estrellas INT,
     Producto_Key INT UNSIGNED,
+    Fecha_Key INT UNSIGNED,
     PRIMARY KEY (Review_key),
     CONSTRAINT fk_producto_review
         FOREIGN KEY (Producto_Key)
         REFERENCES DIM_Producto(Producto_key)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    CONSTRAINT fk_Fecha_Key
+        FOREIGN KEY (Fecha_Key)
+        REFERENCES DIM_Fecha_Review(Fecha_Key)
         ON DELETE CASCADE
         ON UPDATE NO ACTION,
     INDEX fk_film_idx (Producto_Key ASC) VISIBLE
