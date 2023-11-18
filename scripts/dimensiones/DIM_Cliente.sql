@@ -1,6 +1,6 @@
 INSERT INTO adw_dwh.DIM_Cliente (cliente_id, Demografia, Suffix, Title, PersonType)
 SELECT
-    CONCAT('CLI_', c.CustomerID),
+    c.CustomerID,
     p.Demographics AS Demografia,
     p.Suffix,
     p.Title,

@@ -1,6 +1,6 @@
 INSERT INTO adw_dwh.DIM_Vendedor (Vendedor_id, Antiguedad, Estado_Marital, Salario, Titulo)
 SELECT
-    CONCAT('Vendedor_', E.BusinessEntityID) AS Vendedor_id,
+    E.BusinessEntityID AS Vendedor_id,
     DATEDIFF(CURRENT_TIMESTAMP, E.ModifiedDate) AS Antiguedad,
     E.MaritalStatus AS Estado_Marital,
     EPH.rate AS Salario,

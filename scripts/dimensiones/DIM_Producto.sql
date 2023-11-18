@@ -1,6 +1,6 @@
 INSERT INTO adw_dwh.DIM_Producto (producto_id, Subcategoria, Categoria, Nombre)
 SELECT 
-    CONCAT('PROD_', p.ProductID), 
+    p.ProductID, 
     ps.Name AS Subcategoria,
     pc.Name AS Categoria,
     p.Name

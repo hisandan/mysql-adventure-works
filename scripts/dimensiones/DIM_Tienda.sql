@@ -1,6 +1,6 @@
 INSERT INTO adw_dwh.DIM_Tienda (Tienda_id, Cod_postal, Ciudad, Estado, Pais, Nombre)
 SELECT 
-    CONCAT('Store_', SS.BusinessEntityID) AS Tienda_id,
+    SS.BusinessEntityID AS Tienda_id,
     PA.PostalCode AS Cod_postal,
     PA.City AS Ciudad,
     SP.Name AS Estado,
